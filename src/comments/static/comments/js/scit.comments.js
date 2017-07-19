@@ -53,6 +53,22 @@
         return html_
     }
 
+    function formtarErrorMsg(jsonResponse) {  
+        var message = "";  
+        $.each(jsonResponse, function (key, value) {
+            if (key == 'detail' || key == 'content'){
+                message += value + "<br/>"
+            }else{
+                message += key + ": " + value + "<br/>"
+            }
+        })
+        var formattedMsg = '<div class="scit-alert alert alert-danger alert-dismissible" role="alert">' +
+                        '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                        message +
+                        '</div>'
+        return formattedMsg            
+    }
+
     function handleForm(formData) {
         console.log(formData)
         $.ajax({
@@ -65,7 +81,13 @@
             } ,
             error: function(data){
                 console.log("error")
-                console.log(data)
+                console.log(data.responseJSON)
+                var formErrorExists = $('.scit-alert')
+                if (formErrorExists){
+                    formErrorExists.remove()
+                }
+                var msg = formtarErrorMsg(data.responseJSON)
+                $(".comment-form textarea").before(msg)
             }
         })
     }
