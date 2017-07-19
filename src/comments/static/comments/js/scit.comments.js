@@ -1,6 +1,7 @@
  $(document).ready(function(){
     var endpoint = 'http://localhost:8000/api/comments/'
     var dataUrl = $('.load-comments').attr('data-url')
+    $(".load-comments").after("<div class='form-container'></div>")
 
     getComments(dataUrl)
     function getComments(requestUrl){
@@ -12,12 +13,14 @@
             }, 
             success: function(data){
                 if (data.length > 0){
+                    $(".load-comments").html('')
                     $.each(data, function(index, object){
                         $('.load-comments').append("<li>" + object.content + "</li>")
                     })
                 }
                 var formHtml = generateForm()
-                $(".load-comments").after(formHtml)
+                $(".form-container").html(formHtml)
+                //$(".load-comments").after(formHtml)
             },
             error: function(data){
                 console.log('error')
@@ -36,7 +39,7 @@
         $.ajax({
             url: endpoint + "create/",
             method: "POST",
-            data: formData,
+            data: formData + "&url=" + dataUrl,
             success: function (data) {
                 console.log(data)
                 getComments(dataUrl)
