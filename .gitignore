@@ -1,0 +1,21 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+.DS_Store
+/Include
+/Lib
+/Scripts
+/tcl
+.idea
+__pycache__
+*.sqlite3
+*.xlsx
+pip-selfcheck.json
+venv
+static-cdn
+/pip-selfcheck.json
+src/media/
+.vscode
+*.sublime-workspace
