@@ -121,3 +121,27 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    # will not be server, long term storage
+    os.path.join(BASE_DIR, "static"),
+]
+
+#add root STATICS
+# will be served
+STATIC_ROOT =  os.path.join(os.path.dirname(BASE_DIR), "static-cdn")#CDN
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES':[
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_RENDERER_CLASSES':[
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer', # si comento esta linea al acceder a un endpoint del api aparecerá sólo el json
+    ]
+}
