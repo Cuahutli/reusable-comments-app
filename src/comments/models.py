@@ -17,3 +17,7 @@ class Comment(models.Model):
 
     def __unicode__(self):
         return self.url
+
+    @property
+    def owner(self):
+        return self.user
