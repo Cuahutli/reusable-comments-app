@@ -1,10 +1,26 @@
- $(document).ready(function(){
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+} 
+$(document).ready(function(){
     var endpoint = 'http://localhost:8000/api/comments/'
     var dataUrl = $('.load-comments').attr('data-url')
+    var isUser = false;
     $(".load-comments").after("<div class='form-container'></div>")
 
     getComments(dataUrl)
-
+    
     function renderCommentLine(object) {
         var authorImage =  "<div class='media-left'> " +
                             "<a href='#'>" +
@@ -22,6 +38,7 @@
     }
 
     function getComments(requestUrl){
+        isUser = $.parseJSON(getCookie('isUser'));
         $(".load-comments").html('<h3> Comments</h3>')
         $.ajax({
             methos: "GET",
@@ -50,7 +67,12 @@
         var html_ = "<form method='POST' class='comment-form'>" +
                     "<textarea class='form-control' placeholder='Tu comentario...' name='content'></textarea>" +
                     "<input class='btn btn-default' type='submit' value='Comment'></form>"
-        return html_
+        if (isUser){
+            return html_
+        }else{
+            return "<div class='text-center login-requerido'>Necesitas estar logueado para comentar</div>"
+        }               
+        
     }
 
     function formtarErrorMsg(jsonResponse) {  

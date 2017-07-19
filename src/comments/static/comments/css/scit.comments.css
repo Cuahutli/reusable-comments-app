@@ -1,5 +1,5 @@
 .scit-media{
-        border-bottom: 1px solid #888;
+    border-bottom: 1px solid #888;
 }
 
 .comment-form{
@@ -10,4 +10,10 @@
     max-width: 64px;
     max-height: 64px;
     width:64px;
+}
+
+.login-requerido{
+    margin-top: 20px;
+    margin-bottom: 30px;
+    
 }

@@ -18,10 +18,25 @@ class CommentListAPIView(generics.ListAPIView):
             return Comment.objects.filter(url=url)
         return Comment.objects.none()
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        response = Response(serializer.data)
+        response.set_cookie('isUser','false')
+        if request.user.is_authenticated():
+            response.set_cookie('isUser','true')
+        return response
+
 class CommentCreateAPIView(generics.CreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer    
-    permission_classes = []
+    #permission_classes = []
 
     def perform_create(self, serializer):
         if self.request.user.is_authenticated():
