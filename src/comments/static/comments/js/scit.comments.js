@@ -12,7 +12,7 @@
                             "</a></div>"
         var author = '';
         if (object.user) {
-            author ="<small>" + object.user + "</small>"
+            author ="<small>" + object.user.username + "</small>"
         }
         var timestamp = new Date(object.timestamp) .toLocaleString();
         var html_ = "<div class='media scit-media'>" + authorImage + "<div class='media-body'>" + 

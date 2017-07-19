@@ -9,6 +9,8 @@ from .serializers import CommentSerializer
 class CommentListAPIView(generics.ListAPIView):
     #queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    #authentication_classes = []
+    permission_classes = []
 
     def get_queryset(self, *args, **kwargs):
         url = self.request.GET.get('url')
@@ -19,3 +21,10 @@ class CommentListAPIView(generics.ListAPIView):
 class CommentCreateAPIView(generics.CreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer    
+    permission_classes = []
+
+    def perform_create(self, serializer):
+        if self.request.user.is_authenticated():
+            serializer.save(user=self.request.user)
+        else:
+            serializer.save()
