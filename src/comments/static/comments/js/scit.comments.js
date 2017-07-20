@@ -14,11 +14,12 @@ function getCookie(name) {
     return cookieValue;
 } 
 $(document).ready(function(){
-    var endpoint = 'http://localhost:8000/api/comments/'
-    var dataUrl = $('.load-comments').attr('data-url')
+    var endpoint = $('.scit-load-comments').attr('data-api-endpoint') || "/api/comments/"
+    var dataUrl = $('.scit-load-comments').attr('data-url')
+    var loginUrl = $('.scit-load-comments').attr('data-login') || '/accounts/login/'
     var isUser = false;
     var authUsername;
-    $(".load-comments").after("<div class='form-container'></div>")
+    $(".scit-load-comments").after("<div class='form-container'></div>")
 
     getComments(dataUrl)
     
@@ -46,7 +47,7 @@ $(document).ready(function(){
     function getComments(requestUrl){
         isUser = $.parseJSON(getCookie('isUser'));
         authUsername =String(getCookie('authUsername'));
-        $(".load-comments").html('<h3> Comments</h3>')
+        $(".scit-load-comments").html('<h3> Comments</h3>')
         $.ajax({
             methos: "GET",
             url: endpoint,
@@ -56,12 +57,12 @@ $(document).ready(function(){
             success: function(data){
                 if (data.length > 0){
                     $.each(data, function(index, object){
-                        $('.load-comments').append(renderCommentLine(object))
+                        $('.scit-load-comments').append(renderCommentLine(object))
                     })
                 }
                 var formHtml = generateForm()
                 $(".form-container").html(formHtml)
-                //$(".load-comments").after(formHtml)
+                //$(".scit-load-comments").after(formHtml)
             },
             error: function(data){
                 console.log('error')
@@ -77,7 +78,7 @@ $(document).ready(function(){
         if (isUser){
             return html_
         }else{
-            return "<div class='text-center login-requerido'>Necesitas estar logueado para comentar</div>"
+            return "<div class='text-center login-requerido'><a href='" + loginUrl + "'>Necesitas estar logueado para comentar</a></div>"
         }               
         
     }
@@ -107,7 +108,7 @@ $(document).ready(function(){
             success: function (data) {
                 console.log(data)
                 //getComments(dataUrl)
-                $('.load-comments').append(renderCommentLine(data))
+                $('.scit-load-comments').append(renderCommentLine(data))
                 var formHtml = generateForm()
                 $('.form-container').html(formHtml)
             } ,
